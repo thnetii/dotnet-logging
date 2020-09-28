@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Target Name="InitializePublishDirFormSourceControlManager"
+          DependsOnTargets="InitializeSourceControlInformation"
+          BeforeTargets="PrepareForPublish">
+    <PropertyGroup>
+      <PublishDir Condition=" '$(TargetFramework)' == '' AND '$(RuntimeIdentifier)' == ''"
+        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\</PublishDir>
+      <PublishDir Condition=" '$(TargetFramework)' != '' AND '$(RuntimeIdentifier)' == ''"
+        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\</PublishDir>
+      <PublishDir Condition=" '$(TargetFramework)' != '' AND '$(RuntimeIdentifier)' != ''"
+        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\</PublishDir>
+      <PublishDir Condition=" '$(TargetFramework)' == '' AND '$(RuntimeIdentifier)' != ''"
+        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\$(RuntimeIdentifier)\</PublishDir>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="AddBuildIdToInformationalVersion"
+          Condition=" '$(BuildId)' != ''"
+          DependsOnTargets="GetAssemblyVersion"
+          BeforeTargets="AddSourceRevisionToInformationalVersion"
+          >
+    <PropertyGroup Condition="!(
+                    '$(Configuration)' == 'Release' AND (
+                      $(BuildSourceBranch.StartsWith('refs/heads/rel/')) OR
+                      $(BuildSourceBranch.StartsWith('rel/'))
+                    ))">
+      <!-- Follow SemVer 2.0 rules -->
+      <_InformationalVersionContainsHyphen>false</_InformationalVersionContainsHyphen>
+      <_InformationalVersionContainsHyphen Condition="$(InformationalVersion.Contains('-'))">true</_InformationalVersionContainsHyphen>
+
+      <InformationalVersion Condition="!$(_InformationalVersionContainsHyphen)">$(InformationalVersion)-build$(BuildId)</InformationalVersion>
+      <InformationalVersion Condition="$(_InformationalVersionContainsHyphen)">$(InformationalVersion).build$(BuildId)</InformationalVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="SetPackageVersionToInformationalVersion"
+          Condition=" '$(BuildId)' != ''"
+          DependsOnTargets="AddBuildIdToInformationalVersion"
+          BeforeTargets="AddSourceRevisionToInformationalVersion"
+          >
+    <PropertyGroup>
+      <PackageVersion>$(InformationalVersion)</PackageVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="AddBuildIdPropertyToAssemblyVersionAndTruncateFileVersion"
+          Condition=" '$(BuildId)' != ''"
+          DependsOnTargets="GetAssemblyVersion"
+          BeforeTargets="GetAssemblyAttributes"
+          >
+    <PropertyGroup>
+      <FileVersion>$([System.Version]::Parse('$(AssemblyVersion)').ToString(3))</FileVersion>
+      <AssemblyVersion>$([System.Version]::Parse('$(AssemblyVersion)').ToString(3)).$(BuildId)</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="AddSourceRootLicenseFileToNugetPackageOutput"
+          DependsOnTargets="InitializeSourceControlInformation"
+          BeforeTargets="_GetPackageFiles;GenerateNuspec"
+          >
+    <PropertyGroup>
+      <_SourceRootLicenseFilePath Condition=" '%(SourceRoot.SourceControl)' != '' "
+        >%(SourceRoot.Identity)LICENSE</_SourceRootLicenseFilePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="Exists('$(_SourceRootLicenseFilePath)')">
+      <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+    <ItemGroup Condition="Exists('$(_SourceRootLicenseFilePath)')">
+      <None Include="$(_SourceRootLicenseFilePath)" Pack="true">
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup>
+    <GenerateNuspecDependsOn>InferProjectUrlFromGitHubRepositoryUrl;$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
+  </PropertyGroup>
+
+  <Target Name="InferProjectUrlFromGitHubRepositoryUrl"
+          DependsOnTargets="InitializeSourceControlInformation"
+          Condition="'$(SourceControlInformationFeatureSupported)' == 'true'">
+    <PropertyGroup Condition="
+                    '$(RepositoryUrl)' == '' and
+                    '$(PublishRepositoryUrl)' == 'true'
+                   ">
+      <PackageProjectUrl Condition=" $(PrivateRepositoryUrl.EndsWith('.git'))">$(PrivateRepositoryUrl.Substring(0, $(PrivateRepositoryUrl.LastIndexOf('.git'))))</PackageProjectUrl>
+      <PackageProjectUrl Condition="!$(PrivateRepositoryUrl.EndsWith('.git'))">$(PrivateRepositoryUrl)</PackageProjectUrl>
+    </PropertyGroup>
+  </Target>
+</Project>
