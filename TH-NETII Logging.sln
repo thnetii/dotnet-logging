@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D1D1788B-D21F-4CF9-95AD-B4C93927CCB8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Meta.props = Directory.Meta.props
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE175380-F197-46CF-90A5-16C0E9DC422F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.Logging.DiagnosticsForwarding", "src\THNETII.Logging.DiagnosticsForwarding\THNETII.Logging.DiagnosticsForwarding.csproj", "{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52E1FA50-8420-48FB-88E4-B4203532956F}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Debug|x64.Build.0 = Debug|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Debug|x86.Build.0 = Debug|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Release|x64.ActiveCfg = Release|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Release|x64.Build.0 = Release|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Release|x86.ActiveCfg = Release|Any CPU
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A216E1A0-AC33-4AB9-BCDE-826733FBEDFA} = {CE175380-F197-46CF-90A5-16C0E9DC422F}
+	EndGlobalSection
+EndGlobal
