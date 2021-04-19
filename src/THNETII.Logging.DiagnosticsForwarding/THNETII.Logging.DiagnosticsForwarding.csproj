@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::ISOsPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))"
-                      >$(TargetFrameworks);net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net461</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
